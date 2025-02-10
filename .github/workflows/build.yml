@@ -28,7 +28,7 @@ jobs:
       run: pyinstaller --onefile --windowed numkey_gui.py
     
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: numkey-gui
         path: dist/numkey_gui.exe
