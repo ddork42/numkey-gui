@@ -36,7 +36,6 @@ jobs:
 
 ### File: requirements.txt ###
 keyboard==0.13.5
-tkinter
 
 ### File: .gitignore ###
 # Python
