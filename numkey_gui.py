@@ -9,50 +9,50 @@ class NumKeyGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("NumKey Manager")
-        
+
         # Configure style
         style = ttk.Style()
         style.configure('TCheckbutton', padding=2)
-        
+
         # Initialize checkboxes and variables
         self.checkboxes = {}
         self.vars = {}
-        
+
         # Create numpad checkboxes
         row = 0
         # Regular numpad
         for i in range(10):
             self.create_checkbox(f"Num {i}", row, 0)
             row += 1
-        
+
         # Ctrl + numpad
         row = 0
         for i in range(10):
             self.create_checkbox(f"Ctrl+Num {i}", row, 1)
             row += 1
-            
+
         # Alt + numpad
         row = 0
         for i in range(10):
             self.create_checkbox(f"Alt+Num {i}", row, 2)
             row += 1
-        
+
         # Additional keys
         self.create_checkbox("Num .", row, 0)
         self.create_checkbox("Num +", row + 1, 0)
         self.create_checkbox("Alt+Num .", row, 2)
-        
+
         # Apply button - now added to root instead of main_frame
         ttk.Button(self.root, text="Apply", command=self.apply_keystrokes).grid(
             row=row + 2, column=0, columnspan=3, pady=10, sticky='EW'
         )
-        
+
         # Load saved state
         self.load_state()
-        
+
         # Save state on window close
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-    
+
     def create_checkbox(self, text, row, col):
         var = tk.BooleanVar()
         self.vars[text] = var
@@ -63,10 +63,12 @@ class NumKeyGUI:
         )
         checkbox.grid(row=row, column=col, sticky=tk.W, padx=5)
         self.checkboxes[text] = checkbox
-    
+
     def apply_keystrokes(self):
+        print("Applying keystrokes...")  # Debug print statement
         for key, var in self.vars.items():
             if var.get():
+                print(f"Simulating keystroke for: {key}")  # Debug print statement
                 if key.startswith("Ctrl+"):
                     if "." in key:
                         numkey = "numpad_decimal"
@@ -94,12 +96,12 @@ class NumKeyGUI:
                         numkey = f"numpad_{key.split()[-1]}"
                     keyboard.press_and_release(numkey)
                 time.sleep(0.1)  # Small delay between keystrokes
-    
+
     def save_state(self):
         state = {key: var.get() for key, var in self.vars.items()}
         with open('numkey_state.json', 'w') as f:
             json.dump(state, f)
-    
+
     def load_state(self):
         try:
             with open('numkey_state.json', 'r') as f:
@@ -109,7 +111,7 @@ class NumKeyGUI:
                         self.vars[key].set(value)
         except FileNotFoundError:
             pass
-    
+
     def on_closing(self):
         self.save_state()
         self.root.destroy()
