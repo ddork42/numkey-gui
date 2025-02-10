@@ -14,10 +14,6 @@ class NumKeyGUI:
         style = ttk.Style()
         style.configure('TCheckbutton', padding=2)
         
-        # Create main frame
-        main_frame = ttk.Frame(root, padding="10")
-        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
         # Initialize checkboxes and variables
         self.checkboxes = {}
         self.vars = {}
@@ -46,9 +42,9 @@ class NumKeyGUI:
         self.create_checkbox("Num +", row + 1, 0)
         self.create_checkbox("Alt+Num .", row, 2)
         
-        # Apply button
-        ttk.Button(main_frame, text="Apply", command=self.apply_keystrokes).grid(
-            row=row + 2, column=0, columnspan=3, pady=10
+        # Apply button - now added to root instead of main_frame
+        ttk.Button(self.root, text="Apply", command=self.apply_keystrokes).grid(
+            row=row + 2, column=0, columnspan=3, pady=10, sticky='EW'
         )
         
         # Load saved state
