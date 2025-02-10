@@ -68,17 +68,30 @@ class NumKeyGUI:
         for key, var in self.vars.items():
             if var.get():
                 if key.startswith("Ctrl+"):
-                    numkey = key.replace("Ctrl+Num ", "numpad")
+                    if "." in key:
+                        numkey = "numpad_decimal"
+                    elif "+" in key:
+                        numkey = "numpad_add"
+                    else:
+                        numkey = f"numpad_{key.split()[-1]}"
                     keyboard.press('ctrl')
                     keyboard.press_and_release(numkey)
                     keyboard.release('ctrl')
                 elif key.startswith("Alt+"):
-                    numkey = key.replace("Alt+Num ", "numpad")
+                    if "." in key:
+                        numkey = "numpad_decimal"
+                    else:
+                        numkey = f"numpad_{key.split()[-1]}"
                     keyboard.press('alt')
                     keyboard.press_and_release(numkey)
                     keyboard.release('alt')
                 else:
-                    numkey = key.replace("Num ", "numpad")
+                    if key == "Num .":
+                        numkey = "numpad_decimal"
+                    elif key == "Num +":
+                        numkey = "numpad_add"
+                    else:
+                        numkey = f"numpad_{key.split()[-1]}"
                     keyboard.press_and_release(numkey)
                 time.sleep(0.1)  # Small delay between keystrokes
     
